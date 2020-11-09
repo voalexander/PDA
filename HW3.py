@@ -69,11 +69,11 @@ class PDA:
                     tempStack.pop()
                     if transition[3] != 'e':
                         tempStack.append(transition[3])
-                    moves.append([self.getState(transition[0]), tempString, tempStack])
+                    moves.append([self.getState(transition[0]), string, tempStack])
                 elif transition[2] == 'e':
                     if transition[3] != 'e':
                         tempStack.append(transition[3])
-                    moves.append([self.getState(transition[0]), tempString, tempStack])
+                    moves.append([self.getState(transition[0]), string, tempStack])
 
         return moves
     def getState(self, num):
@@ -134,5 +134,5 @@ if __name__ == '__main__':
         for line in inputFile.readlines():
             inputs.append(line.replace('\n', ''))
     for i in range(1, len(inputs)):
-        print(inputs[i] + " " + str(pda.validateString(inputs[i])))
+        print(pda.validateString(inputs[i]) != 0)
     
