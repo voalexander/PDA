@@ -11,7 +11,6 @@ class PDA:
     def __init__(self, states):
         self.states = states
         self.found = False
-        self.acceptedPath = []
 
     def validateString(self, string):
         stack = ['*']
@@ -82,21 +81,32 @@ class PDA:
                 return state
         return None
 
-
-if __name__ == '__main__':
+def parseInputs(inputFile, testFile):
     data = []
-    with open(sys.argv[1], 'r') as inputFile:
+    inputs = []
+    states = []
+
+    with open(inputFile, 'r') as inputFile:
         for line in inputFile.readlines():
             data.append(line.replace('\n',''))
-    
-    numStates, numTransitions, startState, finalStates = [int(i) for i in data[0].split(' ')]
 
-    states = []
+    with open(testFile, 'r') as inputFile:
+        for line in inputFile.readlines():
+            inputs.append(line.replace('\n', ''))
+    
+    numStates, numTransitions, startState, finalStates = data[0].split(' ')
+
+    # In case of multiple final states
+    fStates = []
+    for final in finalStates:
+        fStates.append(int(final))
+
+    # Parsing States + transitions
     for i in range(len(data) - 1):
         # Initial Data of state
         stateData = data[i + 1].split(' ')
         stateNum = int(stateData[0])
-        stateFinal = (stateNum == finalStates)
+        stateFinal = (stateNum in fStates)
 
         tempState = None
         # Checking if state already exists
@@ -110,11 +120,9 @@ if __name__ == '__main__':
             tempState.num = stateNum
             tempState.final = stateFinal
             states.append(tempState)
-        # For transitions
         
         # Adding transition
         tempState.transitions.append([int(stateData[1]), stateData[2], stateData[3], stateData[4]])
-
 
         # Creating the nextState state
         found = False
@@ -125,14 +133,14 @@ if __name__ == '__main__':
         if not found:
             newState = State()
             newState.num = int(stateData[1])
-            newState.final = (newState.num == finalStates)
+            newState.final = (newState.num in fStates)
             states.append(newState)
 
+    return states, inputs[1:]
+
+if __name__ == '__main__':
+    states, inputs = parseInputs(sys.argv[1], sys.argv[2])
     pda = PDA(states)
-    inputs = []
-    with open(sys.argv[2], 'r') as inputFile:
-        for line in inputFile.readlines():
-            inputs.append(line.replace('\n', ''))
-    for i in range(1, len(inputs)):
-        print(pda.validateString(inputs[i]) != 0)
+    for input in inputs:
+        print(pda.validateString(input) != 0)
     
