@@ -13,13 +13,14 @@ class State:
         self.transitions = []
 
 class PDA:
-    def __init__(self, states):
+    def __init__(self, states, startState):
         self.states = states
+        self.startState = startState
         self.found = False
 
     def validateString(self, string):
         stack = ['*']
-        valid = self.generateTree(self.states[0], string, stack)
+        valid = self.generateTree(self.startState, string, stack)
         self.found = False
         return valid
     
@@ -62,29 +63,30 @@ class PDA:
                     tempStack.pop()
                     if transition[3] != 'e':
                         tempStack.append(transition[3])
-                    moves.append([self.getState(transition[0]), tempString, tempStack])
+                    moves.append([getState(self.states, transition[0]), tempString, tempStack])
                 elif transition[2] == 'e':
                     if transition[3] != 'e':
                         tempStack.append(transition[3])
-                    moves.append([self.getState(transition[0]), tempString, tempStack])
+                    moves.append([getState(self.states, transition[0]), tempString, tempStack])
             # Free transition
             elif transition[1] == 'e':
                 if transition[2] == stack[len(stack) - 1]:
                     tempStack.pop()
                     if transition[3] != 'e':
                         tempStack.append(transition[3])
-                    moves.append([self.getState(transition[0]), string, tempStack])
+                    moves.append([getState(self.states, transition[0]), string, tempStack])
                 elif transition[2] == 'e':
                     if transition[3] != 'e':
                         tempStack.append(transition[3])
-                    moves.append([self.getState(transition[0]), string, tempStack])
+                    moves.append([getState(self.states, transition[0]), string, tempStack])
 
         return moves
-    def getState(self, num):
-        for state in self.states:
-            if state.num == num:
-                return state
-        return None
+
+def getState(states, num):
+    for state in states:
+        if state.num == num:
+            return state
+    return None
 
 def parseInputs(inputFile, testFile):
     data = []
@@ -141,11 +143,11 @@ def parseInputs(inputFile, testFile):
             newState.final = (newState.num in fStates)
             states.append(newState)
 
-    return states, inputs[1:]
+    return states, inputs[1:], getState(states, int(startState))
 
 if __name__ == '__main__':
-    states, inputs = parseInputs(sys.argv[1], sys.argv[2])
-    pda = PDA(states)
+    states, inputs, startState = parseInputs(sys.argv[1], sys.argv[2])
+    pda = PDA(states, startState)
     for input in inputs:
         print("{} - {}".format(input, pda.validateString(input) != 0))
     
