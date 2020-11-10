@@ -1,29 +1,13 @@
-File Descriptions for each file:
 
-input1.txt
-- This is the pda for the first test 
-
-testInput1.txt
-- The test file for input1.txt. The correct output for this file is:
-	true
-	true
-	false
-	false
-	true
-	
-The pda description for the first test is input1.txt and the test strings are in testInput1.txt 
+Worked on by
+Alexander Vo - ahv160030
+Panagiotis Vergos - pxv170003
 
 
-input2.txt
-- This is the pda for the second test
+To run the file, run
 
-testInput2.txt
-- The test file for input2.txt. The correct output for this file is:
-	false
-	true
-	false
-	true
-	false
-	
-The pda description for the second test is input2.txt and the test strings are in testInput2.txt
-	
+python HW3.py "PATH_TO_INPUT_FILE" "PATH_TO_TEST_FILE"
+
+ex: python HW3.py input2.txt testInput2.txt
+
+Tested on Python 3.8.3

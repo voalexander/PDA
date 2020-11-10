@@ -1,3 +1,8 @@
+'''
+Alexander Vo - ahv160030
+Panagiotis Vergos - pxv170003
+'''
+
 import sys
 import copy
 
