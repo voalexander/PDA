@@ -98,7 +98,7 @@ def parseInputs(inputFile, testFile):
 
     # In case of multiple final states
     fStates = []
-    for final in finalStates:
+    for final in finalStates.split(','):
         fStates.append(int(final))
 
     # Parsing States + transitions
@@ -142,5 +142,5 @@ if __name__ == '__main__':
     states, inputs = parseInputs(sys.argv[1], sys.argv[2])
     pda = PDA(states)
     for input in inputs:
-        print(pda.validateString(input) != 0)
+        print("{} - {}".format(input, pda.validateString(input) != 0))
     
